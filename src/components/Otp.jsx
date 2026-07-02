@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function OTP() {
+  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputsRef = useRef([]);
   const navigate = useNavigate();
@@ -28,25 +29,61 @@ function OTP() {
   };
 
   const handleVerify = async () => {
-   const enteredOtp = otp.join("");
-   const response = await fetch("http://localhost:8080/api/users/verifyOtp", {
-       method: "POST",
-       headers: {
-           "Content-Type": "application/json"
-       },
-       body: JSON.stringify({
-           email: localStorage.getItem("email"),
-           otp: enteredOtp
-       })
-   });
-   const token = await response.text();
-   if (token !== "Invalid OTP") {
-       localStorage.setItem("token", token);
-       navigate("/user");
-   } else {
-       alert("Invalid OTP");
-   }
-}
+
+  if (loading) return;
+
+  try {
+    setLoading(true);
+
+    const enteredOtp = otp.join("");
+
+    const response = await fetch(
+      "http://localhost:8080/api/users/verifyOtp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: localStorage.getItem("email"),
+          otp: enteredOtp,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+
+      if (data.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
+    } else {
+      alert("Invalid OTP");
+
+      setOtp(["", "", "", "", "", ""]);
+      inputsRef.current[0]?.focus();
+    }
+  } catch (err) {
+    console.log(err);
+    alert("Invalid OTP");
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  const enteredOtp = otp.join("");
+
+  if (enteredOtp.length === 6 && !otp.includes("")) {
+    handleVerify();
+  }
+}, [otp]);
+
  
 
   return (
@@ -80,11 +117,43 @@ function OTP() {
         </div>
 
         {/* Button */}
-        <button onClick={handleVerify} className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-semibold transition">
-          Verify
-        </button>
+        <button
+  onClick={handleVerify}
+  disabled={loading || otp.includes("")}
+  className={`w-full py-2 rounded-lg font-semibold text-white transition flex items-center justify-center gap-2 ${
+    loading || otp.includes("")
+      ? "bg-green-300 cursor-not-allowed"
+      : "bg-green-500 hover:bg-green-600"
+  }`}
+>
+  {loading ? (
+    <>
+      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      Verifying...
+    </>
+  ) : (
+    "Verify"
+  )}
+</button>
 
       </div>
+
+      {loading && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-2xl shadow-xl text-center w-80">
+      <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+
+      <h2 className="text-xl font-semibold text-green-700">
+        Verifying OTP
+      </h2>
+
+      <p className="text-gray-600 mt-2">
+        Please wait while we verify your OTP...
+      </p>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

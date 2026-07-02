@@ -8,4 +8,5 @@ import com.expense.expense_backend.model.Expense;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long>  {
     List<Expense> findByUser_Id(Long userId);
+    List<Expense> findAll();
 } 

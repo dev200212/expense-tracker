@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.expense.expense_backend.dto.LoginResponse;
 import com.expense.expense_backend.model.OtpRequest;
 import com.expense.expense_backend.model.User;
 import com.expense.expense_backend.repository.UserRepository;
@@ -68,12 +69,14 @@ public String login(@RequestBody User user) {
 
 
     @PostMapping("/verifyOtp")
-    public String verifyOtp(@RequestBody OtpRequest request){
+    public LoginResponse verifyOtp(@RequestBody OtpRequest request){
         if(otpservice.verifyOtp(request.getEmail(), request.getOtp())){
             otpservice.removeOtp(request.getEmail());
-            return jwtUtil.generateToken(request.getEmail());
+            User user = userRepo.findByEmail(request.getEmail()).orElseThrow();
+            String token = jwtUtil.generateToken(request.getEmail());
+            return new LoginResponse(token,user.getRole());
         }
-        return "Invalid OTP";
+        return new LoginResponse(null,"INVALID_OTP");
     }
  
 
@@ -82,6 +85,7 @@ public String login(@RequestBody User user) {
     @PostMapping("/register")
     public String register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("USER");
         userRepo.save(user);
         
         return "User Registered Successfull";

@@ -1,50 +1,56 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react"
 
 function Login() {
-
+  
   const navigate = useNavigate();
-
+  
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false)
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
 
-   const response = await fetch(
-    "http://localhost:8080/api/users/login",
-    {
-      method:"POST",
-      headers:{
-        
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email,
-        password
-      }),
+  if (loading) return; // prevent multiple calls
+
+  try {
+    setLoading(true);
+
+    const response = await fetch(
+      "http://localhost:8080/api/users/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const result = await response.text();
+
+    if (result === "OTP Sent") {
+      localStorage.setItem("email", email);
+      navigate("/otp");
+    } else {
+      alert(result);
     }
-   )
 
-   try {
-  const result = await response.text();
-  // console.log(token);
-
-  // Check if data exists and has id
-  if (result === "OTP Sent") {
-    localStorage.setItem("email", email);
-    navigate("/otp");
-  } else {
-    alert(result);
+  } catch (err) {
+    console.log(err);
+    alert("Please register first");
+  } finally {
+    setLoading(false);
   }
+};
 
-} catch (err) {
-  console.log(err);
-  alert("register pls");
-}
-  }
 
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center px-4">
@@ -75,32 +81,56 @@ function Login() {
 
         {/* Password */}
         <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          {password && password.length < 8 && (
-            <p className="text-red-500 text-sm mt-1">
-              Password must be at least 8 characters
-            </p>
-          )}
-        </div>
+  <div className="relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      placeholder="Enter password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          console.log("Enter pressed")
+          handleLogin();
+        }
+      }}
+      className="w-full border border-gray-300 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500"
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-600"
+    >
+      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+    </button>
+  </div>
+
+  {password && password.length < 8 && (
+    <p className="text-red-500 text-sm mt-1">
+      Password must be at least 8 characters
+    </p>
+  )}
+</div>
 
         {/* Login Button */}
         <button
-          onClick={handleLogin}
-          disabled={!validEmail || password.length < 8}
-          className={`w-full py-2 rounded-lg text-white transition duration-300 ${
-            !validEmail || password.length < 8
-              ? "bg-green-300 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
-          }`}
-        >
-          Login
-        </button>
+  onClick={handleLogin}
+  disabled={!validEmail || password.length < 8 || loading}
+  className={`w-full py-2 rounded-lg text-white transition duration-300 flex items-center justify-center gap-2 ${
+    !validEmail || password.length < 8 || loading
+      ? "bg-green-300 cursor-not-allowed"
+      : "bg-green-600 hover:bg-green-700"
+  }`}
+>
+  {loading ? (
+    <>
+      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      Sending OTP...
+    </>
+  ) : (
+    "Login"
+  )}
+</button>
 
         {/* Register */}
         <div className="text-center mt-4">

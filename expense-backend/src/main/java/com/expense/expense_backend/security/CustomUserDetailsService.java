@@ -1,9 +1,10 @@
 package com.expense.expense_backend.security;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,13 +33,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+                System.out.println("ROLE"+user.getRole());
         return new org.springframework.security.core.userdetails.User(
 
                 user.getEmail(),
 
                 user.getPassword(),
 
-                new ArrayList<>()
+                List.of(new SimpleGrantedAuthority("ROLE_"+user.getRole()))
+
+                
 
         );
 

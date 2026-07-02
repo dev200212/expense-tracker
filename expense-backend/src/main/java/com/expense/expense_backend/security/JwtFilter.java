@@ -1,6 +1,7 @@
 package com.expense.expense_backend.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtFilter extends OncePerRequestFilter {
 
+    
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -28,13 +31,29 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
 
+        
+
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
 
             throws ServletException, IOException {
-                 String authHeader = request.getHeader("Authorization");
-                //  System.out.println(authHeader);
+                Enumeration<String> headerNames = request.getHeaderNames();
+
+while (headerNames.hasMoreElements()) {
+
+    String name = headerNames.nextElement();
+
+    System.out.println(name + " = " + request.getHeader(name));
+
+}
+
+String authHeader = request.getHeader("Authorization");
+
+System.out.println("Authorization = " + authHeader);
+ 
+                //  String authHeader = request.getHeader("Authorization");
+                 System.out.println(authHeader);
             String token = null;
             String email = null;
 

@@ -1,0 +1,426 @@
+.admin-dashboard {
+  min-height: 100vh;
+  background: #f4fff6;
+  padding: 25px;
+  color: #1b4332;
+  font-family: Arial, sans-serif;
+}
+
+.admin-header {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border-left: 6px solid #2e7d32;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.admin-header h1 {
+  color: #2e7d32;
+  margin: 0;
+}
+
+.admin-header p {
+  color: #5f7568;
+  margin-top: 8px;
+}
+
+/* Cards */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  border-top: 5px solid #2e7d32;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+  margin: 0;
+  color: #4b6354;
+  font-size: 16px;
+}
+
+.dashboard-card h2 {
+  margin-top: 12px;
+  color: #2e7d32;
+  font-size: 32px;
+}
+
+/* Chart */
+.chart-box,
+.table-box,
+.edit-box {
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.chart-box h2,
+.table-box h2,
+.edit-box h2 {
+  color: #2e7d32;
+  margin-bottom: 18px;
+}
+
+.empty-text {
+  text-align: center;
+  color: #78917f;
+}
+
+/* Edit form */
+.edit-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.edit-form input {
+  padding: 12px;
+  border: 1px solid #b7dfbf;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.edit-form input:focus {
+  border-color: #2e7d32;
+}
+
+.edit-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #2e7d32;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-form button:hover {
+  background: #1b5e20;
+}
+
+.cancel-btn {
+  background: #78917f !important;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead {
+  background: #2e7d32;
+  color: white;
+}
+
+th,
+td {
+  padding: 13px;
+  text-align: center;
+  border-bottom: 1px solid #e4f2e7;
+}
+
+tbody tr:hover {
+  background: #f1fff3;
+}
+
+/* Role Badge */
+.role {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.admin-role {
+  background: #d8f3dc;
+  color: #1b5e20;
+}
+
+.user-role {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Buttons */
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 8px 13px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  margin: 3px;
+}
+
+.edit-btn {
+  background: #43a047;
+}
+
+.edit-btn:hover {
+  background: #2e7d32;
+}
+
+.delete-btn {
+  background: #e53935;
+}
+
+.delete-btn:hover {
+  background: #b71c1c;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-dashboard {
+    padding: 12px;
+  }
+
+  th,
+  td {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 30px;
+  background: linear-gradient(
+    135deg,
+    #f1f5f9,
+    #dbeafe,
+    #dcfce7
+  );
+}
+
+/* Header */
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.admin-header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.admin-header p {
+  color: #64748b;
+  font-size: 18px;
+}
+
+/* Dashboard Cards */
+
+.dashboard-cards {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.dashboard-card {
+  flex: 1;
+  min-width: 260px;
+  padding: 30px;
+  border-radius: 25px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    #1e293b,
+    #0f172a
+  );
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.15);
+
+  transition: 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-10px);
+}
+
+.dashboard-card h3 {
+  color: #cbd5e1;
+  font-size: 16px;
+}
+
+.dashboard-card h2 {
+  margin-top: 10px;
+  font-size: 38px;
+  color: #4ade80;
+}
+
+/* Chart */
+
+.chart-box {
+  background: white;
+  border-radius: 25px;
+  padding: 30px;
+  margin-bottom: 30px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.chart-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+
+/* Tables */
+
+.table-box {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  margin-top: 25px;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.table-box h2 {
+  margin-bottom: 15px;
+  color: #1e293b;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #0f172a;
+  color: white;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+tbody tr:hover {
+  background: #e2e8f0;
+}
+
+/* Buttons */
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #1d4ed8;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+/* Edit Form */
+
+.edit-box {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  margin-top: 25px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.edit-form {
+  display: grid;
+  gap: 15px;
+}
+
+.edit-form input,
+.edit-form select {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+}
+
+.edit-form button {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ef4444 !important;
+}
+
+/* Roles */
+
+.admin-role {
+  background: #dc2626;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.user-role {
+  background: #16a34a;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+}

@@ -38,13 +38,16 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/register").permitAll()
 
                 .requestMatchers("/api/users/login").permitAll()
-                .requestMatchers("/expenses/**").permitAll()
+                // .requestMatchers("/expenses/**").permitAll()
                 .requestMatchers("/otp").permitAll()
                 .requestMatchers("/api/users/verifyOtp").permitAll()
 
                 //expense api
                 // .requestMatchers("/expenses/**").permitAll()     
-
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                // .requestMatchers("/admin/**").permitAll()
+                // .requestMatchers("/expenses/**").authenticated()
+                .requestMatchers("/expenses/**").hasAnyRole("USER","ADMIN")
                 .anyRequest().authenticated()
 
                 
